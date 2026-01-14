@@ -1,16 +1,21 @@
-import { createBrowserRouter } from 'react-router-dom';
-
-// eslint-disable-next-line react-refresh/only-export-components
-const HomePage = () => (
-  <div style={{ padding: '20px' }}>
-    <h1>🎉 FreeTree запущен!</h1>
-    <p>Добро пожаловать на платформу</p>
-  </div>
-);
+import { createBrowserRouter } from "react-router-dom";
+import Layout from "../components/Layout/Layout";
+import LoginPage from "../pages/LoginPage";
+import ProfilePage from "../pages/ProfilePage";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <HomePage />,
+    path: "/",
+    Component: Layout,
+    children: [
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
 ]);

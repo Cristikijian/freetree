@@ -19,6 +19,18 @@ model User {
   email     String   @unique
   username  String   @unique
   createdAt DateTime @default(now())
+  posts Post[]
   
   @@map("users")
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
+  createdAt DateTime @default(now())
+  content String
+  title String @db.Char(255)
+
+  @@map("posts")
 }

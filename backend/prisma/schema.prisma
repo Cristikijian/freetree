@@ -29,6 +29,7 @@ model Post {
   author   User @relation(fields: [authorId], references: [id])
   authorId Int
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
   content String
   title String @db.Char(255)
 

@@ -12,13 +12,24 @@ const NavBar = () => {
       fontWeight={400}
     >
       <Link to="/">
-        <Box cursor={"pointer"} color={"white"}>Главная</Box>
+        <Box cursor={"pointer"} color={"white"}>
+          Главная
+        </Box>
       </Link>
       <Link to="/login">
-        <Box cursor={"pointer"} color={"white"}>Авторизация</Box>
+        <Box cursor={"pointer"} color={"white"}>
+          Авторизация
+        </Box>
       </Link>
       <Link to="/profile">
-        <Box cursor={"pointer"} color={"white"}>Профиль</Box>
+        <Box cursor={"pointer"} color={"white"}>
+          Профиль
+        </Box>
+      </Link>
+      <Link to="/journal">
+        <Box cursor={"pointer"} color={"white"}>
+          Журнал
+        </Box>
       </Link>
     </Stack>
   );

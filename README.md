@@ -1,4 +1,5 @@
 # freetree
 
-#backend: npm run start:dev
-#frontend: npm run dev
+### backend: npm run start:dev
+
+### frontend: npm run dev

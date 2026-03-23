@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   postgres:
     image: postgres:17-alpine
@@ -51,3 +49,4 @@ volumes:
 networks:
   freetree-network:
     driver: bridge
+    name: freetree_network

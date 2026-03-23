@@ -12,7 +12,7 @@ export class UserController {
 
   @Get('/current')
   async getCurrentUser(): Promise<User | null> {
-    return this.userService.getById(1);
+    return this.userService.getById(2);
   }
 
   @Get('/:id')

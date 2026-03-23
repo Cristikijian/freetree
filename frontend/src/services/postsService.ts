@@ -2,7 +2,10 @@ import axios, { type AxiosResponse } from "axios";
 import type { Post } from "../types";
 
 class PostsService {
-  async getPosts(): Promise<AxiosResponse | undefined> {
+  async getPosts(username?: string): Promise<AxiosResponse | undefined> {
+    if (username) {
+      return axios.get(`http://localhost:3000/posts/${username}`);
+    }
     return axios.get("http://localhost:3000/posts");
   }
 

@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
         element: <ProfilePage />,
       },
       {
-        path: "/journal",
+        path: "/:username/journal",
         element: <JournalPage />,
       },
     ],

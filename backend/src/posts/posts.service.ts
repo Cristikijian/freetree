@@ -21,6 +21,13 @@ export class PostsService {
     return `This action returns a #${id} post`;
   }
 
+  findByUserId(id: number) {
+    return this.prisma.post.findMany({
+      orderBy: { createdAt: 'desc' },
+      where: { authorId: id },
+    });
+  }
+
   async update(data: UpdatePostDto) {
     const id = data.id;
     const post = await this.prisma.post.findUnique({

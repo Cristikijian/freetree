@@ -16,9 +16,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
+import { useNavigate, useParams } from "react-router-dom";
 import { postsService } from "../services/postsService";
 import { userService } from "../services/userService";
 import type { Post, User } from "../types";
@@ -31,6 +33,9 @@ const JournalPage = () => {
   >({});
   const [posts, setPosts] = useState<Post[]>([]);
   const [editingPostId, setEditingPostId] = useState<number | null>(null);
+  const params = useParams();
+  const navigate = useNavigate();
+  const userName = params.username;
 
   useEffect(() => {
     userService.getCurrentUser().then((response) => {
@@ -41,12 +46,20 @@ const JournalPage = () => {
   }, []);
 
   useEffect(() => {
-    postsService.getPosts().then((response) => {
-      if (response) {
-        setPosts(response.data);
-      }
-    });
-  }, []);
+    postsService
+      .getPosts(userName)
+      .then((response) => {
+        if (response) {
+          setPosts(response.data);
+        }
+      })
+      .catch((e: unknown) => {
+        if (axios.isAxiosError(e) && e.response?.status === 404) {
+          navigate("/");
+        }
+      });
+  }, [userName]);
+
   const { register, reset, handleSubmit, setValue } = useForm<{
     title: string;
     description?: string;
@@ -80,7 +93,7 @@ const JournalPage = () => {
         await postsService.createPost(postData);
       }
 
-      const updatedPosts = await postsService.getPosts();
+      const updatedPosts = await postsService.getPosts(userName);
       if (updatedPosts) {
         setPosts(updatedPosts.data);
       }
@@ -88,7 +101,7 @@ const JournalPage = () => {
       setIsOpenUpdateForm({});
       setEditingPostId(null);
       reset();
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(e);
     }
   };
@@ -102,7 +115,7 @@ const JournalPage = () => {
 
   const handleDelete = async (id: number) => {
     await postsService.delete(id);
-    const updatedPosts = await postsService.getPosts();
+    const updatedPosts = await postsService.getPosts(userName);
     if (updatedPosts) {
       setPosts(updatedPosts.data);
     }
@@ -110,6 +123,7 @@ const JournalPage = () => {
 
   const handleCancel = () => {
     setIsOpenUpdateForm({});
+    setIsOpenPostForm(false);
     setEditingPostId(null);
     reset();
   };
@@ -129,7 +143,6 @@ const JournalPage = () => {
             px={6}
             _hover={{ filter: "brightness(110%)" }}
           >
-            {" "}
             <Box as="span" mr={2} display="inline-flex" alignItems="center">
               <FiPlus />
             </Box>
@@ -154,13 +167,38 @@ const JournalPage = () => {
                       <Input {...register("content")} name="content" />
                     </Field.Root>
                   </Fieldset.Content>
-                  <Button
-                    type="submit"
-                    alignSelf="flex-start"
-                    backgroundColor={"slate"}
-                  >
-                    Опубликовать
-                  </Button>
+                  <Box flexDirection={"row"}>
+                    <Button
+                      backgroundColor="slate"
+                      color="white"
+                      borderRadius="full"
+                      px={6}
+                      _hover={{
+                        filter: "brightness(110%)",
+                        borderColor: "slate",
+                      }}
+                      margin={"5px"}
+                      type="reset"
+                      alignSelf="flex-start"
+                      onClick={handleCancel}
+                    >
+                      Отмена
+                    </Button>
+                    <Button
+                      type="submit"
+                      backgroundColor="slate"
+                      color="white"
+                      borderRadius="full"
+                      px={6}
+                      _hover={{
+                        filter: "brightness(110%)",
+                        borderColor: "slate",
+                      }}
+                      alignSelf="flex-start"
+                    >
+                      Опубликовать
+                    </Button>
+                  </Box>
                 </Fieldset.Root>
               </form>
             </CardBody>

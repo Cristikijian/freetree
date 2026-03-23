@@ -26,7 +26,8 @@ const NavBar = () => {
           Профиль
         </Box>
       </Link>
-      <Link to="/journal">
+      {/* need to add currenUser */}
+      <Link to="/vasya/journal">
         <Box cursor={"pointer"} color={"white"}>
           Журнал
         </Box>
